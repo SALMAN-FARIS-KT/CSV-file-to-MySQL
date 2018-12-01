@@ -1,0 +1,78 @@
+  
+                <form id="upload_csv" method="post" enctype="multipart/form-data">  
+                     <div class="col-md-3">  
+                          <br />  
+                          <h3 class="header" style="font-family: Georgia, serif;font-size: 22px">Choose CSV file and Upload</h3>  
+                     </div>  
+                     <div class="col-md-4">  
+                          <input type="file" name="qn_file" style="margin-top:15px;" />  
+                     </div>  
+                     <div class="col-md-5">  
+                          <input type="submit" name="upload" id="upload" value="Upload" style="margin-top:10px;" class="btn btn-info" />  
+                     </div>  
+                     <div style="clear:both"></div>  
+                </form>  
+                <br /><br /><br />  
+                <div class="table-responsive" id="qn_table">  
+                     <table class="table table-bordered">  
+                          <tr>  
+                               <th width="5%">Qn_id</th>  
+                               <th width="25%">Question</th>  
+                               <th width="35%">difficulty</th>  
+                               <th width="10%">course</th>  
+                               <th width="20%">semester</th>  
+                               <th width="5%">subject</th>
+                               <th width="5%">modules</th>  
+                          </tr>  
+                          <?php  
+                          while($row = mysqli_fetch_array($result))  
+                          {  
+                          ?>  
+                          <tr>  
+                               <td><?php echo $row["Qn_id"]; ?></td>  
+                               <td><?php echo $row["Question"]; ?></td>  
+                               <td><?php echo $row["difficulty"]; ?></td>  
+                               <td><?php echo $row["course"]; ?></td>  
+                               <td><?php echo $row["semester"]; ?></td>  
+                               <td><?php echo $row["subject"]; ?></td> 
+                               <td><?php echo $row["modules"]; ?></td>  
+                          </tr>  
+                          <?php  
+                          }  
+                          ?>  
+                     </table>  
+                </div>  
+           </div> 
+           </div>
+</div> 
+      </body>  
+ </html>  
+ <script> 
+      $(document).ready(function(){ 
+           $('#upload_csv').on("submit", function(e){  
+                e.preventDefault(); //form will not submitted  
+                $.ajax({  
+                     url:"import.php",  
+                     method:"POST",
+                     data:new FormData(this),  
+                     contentType:false,          // The content type used when sending data to the server.  
+                     cache:false,                // To unable request pages to be cached  
+                     processData:false,          // To send DOMDocument or non processed data file it is set to false  
+                     success: function(data){  
+                          if(data=='Error1')  
+                          {  
+                               alert("Invalid File");  
+                          }  
+                          else if(data == "Error2")  
+                          {  
+                               alert("Please Select File");  
+                          }  
+                          else  
+                          {  
+                               $('#qn_table').html(data);  
+                          }  
+                     }  
+                })  
+           });  
+      });  
+ </script>
